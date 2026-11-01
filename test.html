@@ -3879,7 +3879,7 @@
         if (r >= 11 && r <= 13) return n + 'th';
         return n + ({ 1: 'st', 2: 'nd', 3: 'rd' }[n % 10] || 'th');
     }
-        
+
     function openTutorial() {
         renderTutorial();
         document.getElementById('tutorialModal').style.display = 'flex';
@@ -3936,7 +3936,14 @@
             + sections.map(([title, body], i) => `<details class="tut"${i === 0 ? ' open' : ''}><summary>${title}</summary><div class="tut-body">${body}</div></details>`).join('');
         renderMath(document.getElementById('tutorialBody'));
     }
-
+    // ============ GUIDED TOUR ============
+    // A scripted walkthrough: everything dims except one part of the app, a
+    // card beside it explains that part, and Next moves on. Steps switch tabs
+    // and open Advanced themselves; ending the tour puts everything back.
+    function tourGroupOf(el) { return el ? (el.closest('.settings-group') || el) : null; }
+    function tourFormGroup(id) { const el = document.getElementById(id); return el ? (el.closest('.form-group') || el.parentElement) : null; }
+    function tourKey(name) { return `<kbd>${escapeHtml(keyLabel(deckConfig.keys[name]))}</kbd>`; }
+    
     const TOUR_STEPS = [
         { title: 'Welcome', text: () => `A quick walk through the app. Press Next or <kbd>→</kbd> to continue, Back or <kbd>←</kbd> to go back, and <kbd>Esc</kbd> to leave at any time.` },
         { mode: 'study', target: () => document.querySelector('.header'), title: 'Your deck',
